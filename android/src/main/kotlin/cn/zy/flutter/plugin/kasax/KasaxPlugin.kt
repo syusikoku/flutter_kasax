@@ -24,10 +24,20 @@ class KasaxPlugin(var context: Context) : FlutterPlugin, MethodCallHandler {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
         } else if (call.method == "showLongToast") {
             var msg = call.params["msg"];
-            UtilsManager.getToast().showLongToast(msg)
+            if(msg!=null){
+                UtilsManager.getToast().showLongToast(msg)
+                result.sucess(1)
+            }else{
+                result.sucess(0)
+            }
         } else if (call.method == "showShortToast") {
             var msg = call.params["msg"];
-            UtilsManager.getToast().showShortToast(msg)
+            if(msg!=null){
+                UtilsManager.getToast().showShortToast(msg)
+                result.sucess(1)
+            }else{
+                result.sucess(0)
+            }
         } else {
             result.notImplemented()
         }
