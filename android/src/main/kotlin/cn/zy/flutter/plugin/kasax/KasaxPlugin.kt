@@ -9,14 +9,13 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
 /** KasaxPlugin */
-class KasaxPlugin(var context: Context) : FlutterPlugin, MethodCallHandler {
+class KasaxPlugin() : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "cn.kasax/commmon_utils")
         channel.setMethodCallHandler(this)
-
-        UtilsManager.inject(context)
+        UtilsManager.inject(flutterPluginBinding.applicationContext)
     }
 
 
