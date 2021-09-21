@@ -13,37 +13,49 @@ class KasaxPlugin(var context: Context) : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "kasax")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "cn.kasax/commmon_utils")
         channel.setMethodCallHandler(this)
 
         UtilsManager.inject(context)
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (call.method == "getPlatformVersion") {
+
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
+
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        val methodName = call.method
+        if (methodName == "getPlatformVersion") {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else if (call.method == "showLongToast") {
-            var msg = call.params["msg"];
-            if(msg!=null){
-                UtilsManager.getToast().showLongToast(msg)
-                result.sucess(1)
-            }else{
-                result.sucess(0)
+        } else if (methodName == "showLongToast") {
+            val hasArgument = call.hasArgument("msg")
+            if (hasArgument) {
+                var msgContent = call.argument<String>("msg")
+                if (msgContent != null) {
+                    UtilsManager.getToast().showLongToast(msgContent)
+                    result.success("1")
+                } else {
+                    result.error("0", "内容不能为空", null)
+                }
+            } else {
+                result.error("0", "参数不能为空", null)
             }
-        } else if (call.method == "showShortToast") {
-            var msg = call.params["msg"];
-            if(msg!=null){
-                UtilsManager.getToast().showShortToast(msg)
-                result.sucess(1)
-            }else{
-                result.sucess(0)
+        } else if (methodName == "showShortToast") {
+            val hasArgument = call.hasArgument("msg")
+            if (hasArgument) {
+                var msgContent = call.argument<String>("msg")
+                if (msgContent != null) {
+                    UtilsManager.getToast().showShortToast(msgContent)
+                    result.success("1")
+                } else {
+                    result.error("0", "内容不能为空", null)
+                }
+            } else {
+                result.error("0", "参数不能为空", null)
             }
         } else {
             result.notImplemented()
         }
-    }
-
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
     }
 }
