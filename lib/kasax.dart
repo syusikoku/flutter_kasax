@@ -12,14 +12,14 @@ class Kasax {
   }
 
   /// 显示系统默认 short时长 toast
-  static Future<int> showShortToast() async {
-    final int result = await _channel.invokeMethod('showShortToast');
+  static Future<int> showShortToast(msg) async {
+    final int result = await _channel.invokeMethod('showShortToast', {"msg": msg});
     return result;
   }
 
   /// 显示系统默认 long时长 toast
-  static Future<int> showLongToast() async {
-    final int result = await _channel.invokeMethod('showLongToast');
+  static Future<int> showLongToast(msg) async {
+    final int result = await _channel.invokeMethod('showLongToast', {"msg": msg});
     return result;
   }
 }
