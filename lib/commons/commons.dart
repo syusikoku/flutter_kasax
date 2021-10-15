@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kasax/utils/log_utils.dart';
 import 'package:kasax/utils/route_utils.dart';
+import 'package:kasax/widgets/circle_button.dart';
 
 import 'basic_uipage.dart';
 import 'common_entrys.dart';
@@ -105,5 +107,45 @@ buildCommonRaisedButton(title, marginSize, callback) {
         ),
       ),
     ),
+  );
+}
+
+/// 构建圆角按钮
+buildCircleButton(String title, VoidCallback callback) {
+  return CircleButton(
+    title: title,
+    callback: callback,
+  );
+}
+
+/// 构建富文本
+Widget buildRichText(String searchKey, String target) {
+// LogUtil.e("search2: _searchStr: $searchKey , target: $target");
+  var _highlightStyle = TextStyle(color: Colors.red, fontSize: 14);
+  var _normalStyle = TextStyle(color: Colors.black, fontSize: 14);
+  List<TextSpan> spans = [];
+
+  if (searchKey.isEmpty) {
+    spans.add(TextSpan(text: target, style: _normalStyle));
+  } else {
+    if (searchKey == target) {
+      spans.add(TextSpan(text: target, style: _highlightStyle));
+    } else {
+      List<String> list = target.split(searchKey);
+      LogUtil.e("list: ${list.toString()} , len =${list.length}");
+      for (int i = 0; i < list.length; i++) {
+        if ((i + 1) % 2 == 0) {
+          spans.add(TextSpan(text: searchKey, style: _highlightStyle));
+        }
+        var val = list[i];
+        if (val.length > 0) {
+          spans.add(TextSpan(text: val, style: _normalStyle));
+        }
+      }
+    }
+  }
+
+  return RichText(
+    text: TextSpan(children: spans),
   );
 }
