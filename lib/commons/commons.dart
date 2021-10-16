@@ -8,8 +8,12 @@ import 'common_entrys.dart';
 import 'common_test_datas.dart';
 
 /// 构建基础UI界面
-Widget buildBasicUIPage(Widget widget, String title) {
-  return BasicUIPage(PageInfo(widget, title: title));
+/// 构建基础UI界面
+Widget buildBasicUIPage(Widget widget, String title, {bool showAppbar = true}) {
+  return BasicUIPage(
+    PageInfo(widget, title: title),
+    showAppbar: showAppbar,
+  );
 }
 
 /// 构建基础通用的ListView
