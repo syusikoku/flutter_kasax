@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kasax/commons/baic_placeholder.dart';
 
 import 'common_entrys.dart';
 
@@ -7,7 +8,13 @@ class BasicUIPage extends StatelessWidget {
   final PageInfo _pageInfo;
   final bool showAppbar;
 
-  const BasicUIPage(this._pageInfo, {Key? key, this.showAppbar = true}) : super(key: key);
+  // 展示模式:水平和垂直
+  final bool isActionGroupRowStyle;
+  final List<FloatingActionButton>? actionButtons;
+
+  const BasicUIPage(this._pageInfo,
+      {Key? key, this.showAppbar = true, this.actionButtons, this.isActionGroupRowStyle = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +28,9 @@ class BasicUIPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: _pageInfo.routePage,
+      floatingActionButton: Container(
+        child: isActionGroupRowStyle ? buildRowActionbars() : buildColumnActionbars(),
+      ),
     );
   }
 
@@ -28,5 +38,23 @@ class BasicUIPage extends StatelessWidget {
     return Scaffold(
       body: _pageInfo.routePage,
     );
+  }
+
+  isEmptyActionGruoup() => actionButtons == null || actionButtons!.isEmpty;
+
+  buildRowActionbars() {
+    return isEmptyActionGruoup()
+        ? PlaceHolderUI()
+        : Row(
+            children: actionButtons!.toList(),
+          );
+  }
+
+  buildColumnActionbars() {
+    return isEmptyActionGruoup()
+        ? PlaceHolderUI()
+        : Column(
+            children: actionButtons!.toList(),
+          );
   }
 }
